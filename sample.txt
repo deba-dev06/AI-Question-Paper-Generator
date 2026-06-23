@@ -1,0 +1,14 @@
+Artificial Intelligence (AI) is a branch of computer science that focuses on building machines capable of performing tasks that typically require human intelligence. These tasks include learning, reasoning, problem-solving, perception, and language understanding.
+
+Machine Learning (ML) is a subset of AI that enables systems to learn and improve from experience without being explicitly programmed. It uses algorithms to analyze data, identify patterns, and make decisions.
+
+There are three main types of Machine Learning:
+1. Supervised Learning – where the model is trained on labeled data.
+2. Unsupervised Learning – where the model finds patterns in unlabeled data.
+3. Reinforcement Learning – where an agent learns by interacting with an environment and receiving rewards or penalties.
+
+Deep Learning is a specialized subset of Machine Learning that uses neural networks with many layers (called deep neural networks). It is widely used in applications such as image recognition, speech recognition, and natural language processing.
+
+Natural Language Processing (NLP) is a field of AI that focuses on the interaction between computers and human language. It enables machines to understand, interpret, and generate human language.
+
+Applications of AI include virtual assistants, recommendation systems, self-driving cars, healthcare diagnostics, and fraud detection.
