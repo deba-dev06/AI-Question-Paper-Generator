@@ -1,4 +1,5 @@
 from transformers import pipeline
+import time
 
 qg_pipeline = pipeline(
     "text2text-generation",
@@ -22,6 +23,7 @@ def generate_questions(text, marks):
         instruction = "Generate 5 questions."
 
     prompt = f"{instruction}\nText:\n{text}"
+    _t_start = time.perf_counter()
     results = qg_pipeline(
         prompt,
         max_length=256,
@@ -29,6 +31,7 @@ def generate_questions(text, marks):
         do_sample=True,
         temperature=0.8
     )
+    _t_elapsed = round(time.perf_counter() - _t_start, 2)
 
     questions = []
     for r in results:
@@ -41,4 +44,4 @@ def generate_questions(text, marks):
     unique_questions = list(dict.fromkeys(questions))
     final_questions = unique_questions[:10]
 
-    return "\n".join(final_questions)
+    return "\n".join(final_questions), _t_elapsed
