@@ -1,10 +1,12 @@
-from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import torch
 import time
 
-qg_pipeline = pipeline(
-    "text2text-generation",
-    model="google/flan-t5-base"
-)
+_MODEL_NAME = "google/flan-t5-base"
+_tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
+_model = AutoModelForSeq2SeqLM.from_pretrained(_MODEL_NAME)
+_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+_model = _model.to(_device)
 
 def truncate_text(text, max_words=300):
     words = text.split()
@@ -24,14 +26,25 @@ def generate_questions(text, marks):
 
     prompt = f"{instruction}\nText:\n{text}"
     _t_start = time.perf_counter()
-    results = qg_pipeline(
+    inputs = _tokenizer(
         prompt,
-        max_length=256,
-        num_return_sequences=5,
-        do_sample=True,
-        temperature=0.8
-    )
+        return_tensors="pt",
+        truncation=True,
+        max_length=512,
+    ).to(_device)
+    with torch.no_grad():
+        output_ids = _model.generate(
+            **inputs,
+            max_new_tokens=256,
+            num_return_sequences=5,
+            do_sample=True,
+            temperature=0.8,
+        )
     _t_elapsed = round(time.perf_counter() - _t_start, 2)
+    results = [
+        {"generated_text": _tokenizer.decode(ids, skip_special_tokens=True)}
+        for ids in output_ids
+    ]
 
     questions = []
     for r in results:
